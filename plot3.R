@@ -1,0 +1,13 @@
+household <- read.table("./data/household_power_consumption.txt",sep=";",header=TRUE, stringsAsFactors=FALSE)
+householdSubsetIndex = (as.Date(household$Date,"%d/%m/%Y") >= as.Date("01/02/2007","%d/%m/%Y")) & (as.Date(household$Date,"%d/%m/%Y") <= as.Date("02/02/2007","%d/%m/%Y"))
+household <- household[householdSubsetIndex,]
+days <- paste(household$Date,household$Time)
+subMeter1 <- as.numeric(household$Sub_metering_1)
+subMeter2 <- as.numeric(household$Sub_metering_2)
+subMeter3 <- as.numeric(household$Sub_metering_3)
+png(filename="plot3.png")
+plot(strptime(days,format = "%d/%m/%Y %H:%M:%S") ,subMeter1 ,type="l",ylab="Energy sub metering",xlab="")
+lines(strptime(days,format = "%d/%m/%Y %H:%M:%S"), subMeter2, type="l", col="red") 
+lines(strptime(days,format = "%d/%m/%Y %H:%M:%S"), subMeter3, type="l", col="blue")
+legend("topright",lty=1,col = c("black", "blue", "red"), legend = c("Sub_metering_1", "Sub_metering_2","Sub_metering_3"))
+dev.off()
